@@ -1,7 +1,7 @@
-streamlit as st
-sci-kit learn as sklearn
-pandas as pd
-numpy as np
-matplotlib.pyplot as plt
-seaborn as sns
+streamlit 
+sklearn
+pandas 
+numpy 
+matplotlib.pyplot 
+seaborn 
 joblib
