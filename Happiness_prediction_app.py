@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import joblib
 import pandas as pd
+import statistics as stats
 
 # 1. Page Configuration
 st.set_page_config(page_title="Happiness Predictor", page_icon="🌍", layout="centered")
@@ -60,15 +61,11 @@ if st.button("Predict Happiness Rank", type="primary"):
        "Environmental_Performance_Rank": env
     }])
     input_data = input_data.reindex(columns=trained_columns)
-    input_data_inverted = 218 - input_data
-    print(input_data_inverted)
-    raw_prediction = model.predict(input_data_inverted)[0]
-    final_rank = 218 - raw_prediction
+    average_rank = input_data.mean(axis=1).values[0]
 
 
 
-
-    predicted_rank = int(np.clip(np.round(final_rank), 1, 217))
+    predicted_rank = int(np.clip(np.round(average_rank), 1, 217))
     
     st.success(f"### 🎯 Predicted Happiness Rank: **#{predicted_rank}** (out of 217)")
 
