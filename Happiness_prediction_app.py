@@ -5,18 +5,23 @@ import pandas as pd
 import statistics as stats
 
 # 1. Page Configuration
-st.set_page_config(page_title="Satisfaction Predictor", page_icon="🌍", layout="centered")
+st.set_page_config(page_title="Happiness Predictor", page_icon="🌍", layout="centered")
 
 # 2. Load the trained model
 @st.cache_resource
-def load_model():
-    return joblib.load('Happiness rank predictor.joblib')
+def load_assets():
+    model = joblib.load('Happiness rank predictor.joblib')
+    scaler = joblib.load("scaler.joblib")
+    return model,scaler
 
-model = load_model()
+model,scaler = load_assets()
+
+
+
 
 # 3. Header
-st.title("🌍 Global Countries citizen satisfaction Rank Predictor")
-st.write("Adjust the ranking indicators below to predict a country's Satisfaction Rank:")
+st.title("🌍 Global Country Happiness Rank Predictor")
+st.write("Adjust the ranking indicators below to predict a country's Happiness Rank:")
 
 # 4. Two columns of slider inputs
 col1, col2 = st.columns(2)
@@ -46,7 +51,7 @@ trained_columns = [
  'Global_Peace_Rank',
  'Environmental_Performance_Rank'] 
 # 5. Predict Button
-if st.button("Predict Satisfaction Rank", type="primary"):
+if st.button("Predict Happiness Rank", type="primary"):
     # Must be in the exact order the model was trained on
     #This dataframe must be the same number as the number of features in the trained model
     input_data = pd.DataFrame([{
@@ -60,12 +65,11 @@ if st.button("Predict Satisfaction Rank", type="primary"):
        "Global_Peace_Rank": peace,
        "Environmental_Performance_Rank": env
     }])
-    input_data = input_data.reindex(columns=trained_columns)
-    average_rank = input_data.mean(axis=1).values[0]
 
+    scaled_input = scaler.transform(input_data)
+    raw_prediction = model.predict(scaled_input)[0]
 
-
-    predicted_rank = int(np.clip(np.round(average_rank), 1, 217))
+    predicted_rank = int(np.clip(np.round(raw_prediction), 1, 217))
     
-    st.success(f"### 🎯 Predicted Satisfaction Rank: **#{predicted_rank}** (out of 217)")
+    st.success(f"### 🎯 Predicted Happiness Rank: **#{predicted_rank}** (out of 217)")
 
