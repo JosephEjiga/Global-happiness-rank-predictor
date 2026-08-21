@@ -5,7 +5,7 @@ import pandas as pd
 import statistics as stats
 
 # 1. Page Configuration
-st.set_page_config(page_title="CitizensSatisfaction Rank Predictor", page_icon="🌍", layout="centered")
+st.set_page_config(page_title="Citizens Satisfaction Rank Predictor", page_icon="🌍", layout="centered")
 
 # 2. Load the trained model
 @st.cache_resource
